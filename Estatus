@@ -1,0 +1,18 @@
+import psutil
+
+def check_process_status(process_name):
+    """Check the status of a process by name"""
+    for proc in psutil.process_iter(['name']):
+        if proc.info['name'] == process_name:
+            cpu_percent = proc.cpu_percent()
+            mem_info = proc.memory_info()
+            mem_percent = proc.memory_percent()
+            print(f"Process {process_name} is running:")
+            print(f"CPU Usage: {cpu_percent}%")
+            print(f"Memory Usage: {mem_info.rss / (1024*1024):.2f} MB ({mem_percent:.2f}%)")
+            return True
+    print(f"Process {process_name} is not running.")
+    return False
+
+if __name__ == '__main__':
+    check_process_status('chrome.exe')
